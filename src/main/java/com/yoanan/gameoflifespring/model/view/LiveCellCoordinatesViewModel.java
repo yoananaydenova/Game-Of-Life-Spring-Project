@@ -1,8 +1,12 @@
 package com.yoanan.gameoflifespring.model.view;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class LiveCellCoordinatesViewModel {
 
+    @JsonProperty("row_index")
     private int rowIndex;
+    @JsonProperty("column_index")
     private int columnIndex;
 
     public LiveCellCoordinatesViewModel() {

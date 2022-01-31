@@ -1,7 +1,11 @@
 package com.yoanan.gameoflifespring.model.view;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class FieldDimensionsViewModel {
+    @JsonProperty("number_rows")
     private int numberOfRows;
+    @JsonProperty("number_columns")
     private int numberOfColumns;
 
     public FieldDimensionsViewModel() {

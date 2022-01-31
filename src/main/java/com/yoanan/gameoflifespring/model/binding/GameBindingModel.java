@@ -4,13 +4,16 @@ package com.yoanan.gameoflifespring.model.binding;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.Valid;
 import java.util.List;
 
 public class GameBindingModel {
 
     @JsonProperty("field_dimensions")
+    @Valid
     private FieldDimensionsBindingModel fieldDimensions;
     @JsonProperty("live_cells")
+    @Valid
     private List<LiveCellCoordinatesBindingModel> liveCells;
 
     public GameBindingModel() {
