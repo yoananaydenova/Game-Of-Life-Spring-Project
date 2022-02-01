@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -34,11 +35,18 @@ public class GameController {
     @PostMapping("/game-of-life")
     public ResponseEntity<GameViewModel> play (@Valid @RequestBody GameBindingModel gameBindingModel) {
 
-//        GameServiceModel gameServiceModel = gameService.createNextGeneration(gameBindingModel);
-//        GameViewModel gameViewModel = modelMapper.map(gameServiceModel, GameViewModel.class);
-        FieldDimensionsViewModel fieldDimensionsViewModel = new FieldDimensionsViewModel(5,5);
-        List<LiveCellCoordinatesViewModel> liveCellCoordinatesViewModels = List.of(new LiveCellCoordinatesViewModel(1, 1), new LiveCellCoordinatesViewModel(2, 2));
-        GameViewModel gameViewModel = new GameViewModel(fieldDimensionsViewModel, liveCellCoordinatesViewModels);
+        GameServiceModel gameServiceModel = gameService.createNextGeneration(gameBindingModel);
+
+        FieldDimensionsViewModel fieldDimensionsViewModel =
+                new FieldDimensionsViewModel(gameServiceModel.getNumberOfRows(), gameServiceModel.getNumberOfColumns());
+
+        List<LiveCellCoordinatesViewModel> liveCellCoordinatesViewModel = gameServiceModel
+                .getLiveCellCoordinates()
+                .stream()
+                .map(c -> modelMapper.map(c, LiveCellCoordinatesViewModel.class))
+                .collect(Collectors.toList());
+
+        GameViewModel gameViewModel = new GameViewModel(fieldDimensionsViewModel,liveCellCoordinatesViewModel);
 
         return new ResponseEntity<GameViewModel>(gameViewModel, HttpStatus.OK);
 
